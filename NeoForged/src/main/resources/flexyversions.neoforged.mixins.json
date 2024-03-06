@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.khajiitos.chestedcompanions.neoforged.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "flexyversions.refmap.json",
+  "client": [],
+  "mixins": [
+    "ModSorterMixin"
+  ]
+}

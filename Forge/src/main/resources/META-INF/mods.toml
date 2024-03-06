@@ -1,0 +1,29 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "MIT"
+issueTrackerURL = "https://github.com/Khajiitos/ChestedCompanions/issues"
+
+[[mods]]
+modId = "chestedcompanions"
+version = "${version}"
+logoFile = "icon.png"
+displayName = "Chested Companions"
+authors = "Khajiitos"
+displayURL = "https://github.com/Khajiitos/ChestedCompanions"
+description = '''Equip chests on your fluffy friends!'''
+updateJSONURL = "https://updates.khajiitos.fun/chested-companions/updates-forge.json"
+displayTest = "MATCH_VERSION"
+
+[[dependencies.chestedcompanions]]
+modId = "forge"
+mandatory = true
+versionRange = "${forge_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.chestedcompanions]]
+modId = "minecraft"
+mandatory = true
+versionRange = "{minecraft_version_range}"
+ordering = "NONE"
+side = "BOTH"
