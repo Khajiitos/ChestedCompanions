@@ -70,7 +70,6 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5'
 
-    implementation fg.deobf("curse.maven:cat-loaf-978666:5140384")
     implementation project(':Common')
 }
 

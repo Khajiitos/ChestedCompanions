@@ -119,7 +119,7 @@ public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
 
     @Inject(at = @At("HEAD"), method = "mobInteract", cancellable = true)
     public void mobInteract(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (!this.level.isClientSide && !player.isCrouching() && player.getUUID().equals(this.getOwnerUUID())) {
+        if (!this.level().isClientSide && !player.isCrouching() && player.getUUID().equals(this.getOwnerUUID())) {
             if (this.hasChest()) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
 

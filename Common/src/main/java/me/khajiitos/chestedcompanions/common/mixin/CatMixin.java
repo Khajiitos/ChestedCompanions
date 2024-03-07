@@ -96,7 +96,7 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
         this.inventory = new SimpleContainer(this.getInventorySlots());
     }
 
-    private void removeChestContent() {
+    private void removeChestContent(boolean dropChest) {
         if (this.inventory != null) {
             for (int i = 0; i < this.inventory.getContainerSize(); i++) {
                 ItemStack itemStack = this.inventory.getItem(i);
@@ -105,7 +105,11 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
                     this.spawnAtLocation(itemStack, 0.25f);
                 }
             }
-            this.spawnAtLocation(new ItemStack(Items.CHEST), 0.25f);
+
+            if (dropChest) {
+                this.spawnAtLocation(new ItemStack(Items.CHEST), 0.25f);
+            }
+
             this.inventory = null;
         }
     }
@@ -122,7 +126,7 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
 
     @Inject(at = @At("HEAD"), method = "mobInteract", cancellable = true)
     public void mobInteract(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (!this.level.isClientSide && !player.isCrouching() && player.getUUID().equals(this.getOwnerUUID())) {
+        if (!this.level().isClientSide && !player.isCrouching() && player.getUUID().equals(this.getOwnerUUID())) {
             if (this.hasChest()) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
 
@@ -132,7 +136,7 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
                     });
 
                     this.setHasChest(false);
-                    this.removeChestContent();
+                    this.removeChestContent(!player.getAbilities().instabuild);
                     this.playSound(SoundEvents.DONKEY_CHEST, 1.0F, 1.5F);
                 } else {
                     this.openCustomInventoryScreen(player);

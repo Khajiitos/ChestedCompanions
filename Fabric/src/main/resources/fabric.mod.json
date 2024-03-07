@@ -1,25 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "worldplaytime",
+  "id": "chestedcompanions",
   "version": "${version}",
-  "name": "World Play Time",
-  "description": "Displays the world's play time in the world selection menu.",
+  "name": "Chested Companions",
+  "description": "Equip chests on your fluffy friends!",
   "authors": ["Khajiitos"],
   "license": "MIT",
   "icon": "icon.png",
-  "environment": "client",
+  "environment": "*",
   "contact": {
-    "homepage": "https://github.com/Khajiitos/WorldPlayTime",
-    "sources": "https://github.com/Khajiitos/WorldPlayTime",
-    "issues": "https://github.com/Khajiitos/WorldPlayTime/issues"
+    "homepage": "https://github.com/Khajiitos/ChestedCompanions",
+    "sources": "https://github.com/Khajiitos/ChestedCompanions",
+    "issues": "https://github.com/Khajiitos/ChestedCompanions/issues"
   },
   "entrypoints": {
     "client": [
-      "me.khajiitos.worldplaytime.fabric.WorldPlayTimeFabric"
+      "me.khajiitos.chestedcompanions.fabric.client.ChestedCompanionsFabricClient"
+    ],
+    "main": [
+      "me.khajiitos.chestedcompanions.fabric.ChestedCompanionsFabric"
     ]
   },
   "mixins": [
-    "worldplaytime.mixins.json"
+    "chestedcompanions.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.0",
