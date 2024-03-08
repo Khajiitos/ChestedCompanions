@@ -35,9 +35,9 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
         chestModelPart.y = wolfBody.y;
         chestModelPart.z = wolfBody.z;
 
-        chestModelPart.xRot = wolfBody.xRot;
-        chestModelPart.yRot = (float)Math.PI / 2.f;
-        chestModelPart.zRot = (float)Math.PI / 2.f;
+        chestModelPart.xRot = HALF_PI;
+        chestModelPart.yRot = HALF_PI;
+        chestModelPart.zRot = HALF_PI;
 
         chestModelPart.xScale = 0.6f;
         chestModelPart.yScale = 0.6f;

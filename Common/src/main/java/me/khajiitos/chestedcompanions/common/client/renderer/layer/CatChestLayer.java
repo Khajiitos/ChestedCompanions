@@ -35,9 +35,17 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
         chestModelPart.y = catBody.y;
         chestModelPart.z = catBody.z;
 
-        chestModelPart.xRot = catBody.xRot;
-        chestModelPart.yRot = (float)Math.PI / 2.f;
-        chestModelPart.zRot = (float)Math.PI / 2.f;
+        // This is the rotation of the body when sitting.
+        // Unless I find a better way, I will have to manually
+        // adjust the chest's position.
+        if (catBody.xRot == HALF_PI / 2) {
+            chestModelPart.y += 8.0f;
+            chestModelPart.z -= 6.0f;
+        }
+
+        chestModelPart.xRot = HALF_PI;
+        chestModelPart.yRot = HALF_PI;
+        chestModelPart.zRot = HALF_PI;
 
         chestModelPart.xScale = 0.6f;
         chestModelPart.yScale = 0.6f;

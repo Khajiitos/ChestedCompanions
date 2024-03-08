@@ -14,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -23,6 +24,8 @@ import java.util.Set;
 public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     // We will only use the chest from the donkey texture
     private static final ResourceLocation DONKEY_LOCATION = new ResourceLocation("textures/entity/horse/donkey.png");
+
+    protected static final float HALF_PI = (float)Math.PI / 2.f;
 
     public ChestLayer(RenderLayerParent<T, M> renderLayerParent) {
         super(renderLayerParent);

@@ -33,7 +33,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Wolf.class)
 public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
+
     @Unique
+    @SuppressWarnings("all")
     private static final EntityDataAccessor<Boolean> HAS_CHEST = SynchedEntityData.defineId(Wolf.class, EntityDataSerializers.BOOLEAN);
 
     @Unique
@@ -75,17 +77,17 @@ public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
         }
 
         if (this.inventory != null) {
-            compoundTag.put("Items", this.inventory.createTag());
+            compoundTag.put("CCItems", this.inventory.createTag());
         }
     }
 
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData")
     public void readAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
         this.setHasChest(compoundTag.getBoolean("HasChest"));
-        this.createInventory();
 
         if (this.hasChest()) {
-            this.inventory.fromTag(compoundTag.getList("Items", ListTag.TAG_LIST));
+            this.createInventory();
+            this.inventory.fromTag(compoundTag.getList("CCItems", ListTag.TAG_COMPOUND));
         }
     }
 
@@ -93,7 +95,7 @@ public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
         this.inventory = new SimpleContainer(this.getInventorySlots());
     }
 
-    private void removeChestContent() {
+    private void removeChestContent(boolean dropChest) {
         if (this.inventory != null) {
             for (int i = 0; i < this.inventory.getContainerSize(); i++) {
                 ItemStack itemStack = this.inventory.getItem(i);
@@ -102,7 +104,11 @@ public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
                     this.spawnAtLocation(itemStack, 0.25f);
                 }
             }
-            this.spawnAtLocation(new ItemStack(Items.CHEST), 0.25f);
+
+            if (dropChest) {
+                this.spawnAtLocation(new ItemStack(Items.CHEST), 0.25f);
+            }
+
             this.inventory = null;
         }
     }
@@ -129,7 +135,7 @@ public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
                     });
 
                     this.setHasChest(false);
-                    this.removeChestContent();
+                    this.removeChestContent(!player.getAbilities().instabuild);
                     this.playSound(SoundEvents.DONKEY_CHEST, 1.0F, 1.5F);
                 } else {
                     this.openCustomInventoryScreen(player);
@@ -149,6 +155,14 @@ public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
                     cir.setReturnValue(InteractionResult.SUCCESS);
                 }
             }
+        }
+    }
+
+    @Override
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.hasChest()) {
+            this.removeChestContent(true);
         }
     }
 }

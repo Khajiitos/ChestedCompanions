@@ -3,21 +3,17 @@ package me.khajiitos.chestedcompanions.common.mixin;
 import me.khajiitos.chestedcompanions.common.IChestEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.*;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.HasCustomInventoryScreen;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -26,7 +22,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,8 +32,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Cat.class)
 public abstract class CatMixin extends TamableAnimal implements IChestEntity {
+    // TODO: do something to avoid code repetition in the WolfMixin class
     @Unique
+    @SuppressWarnings("all")
     private static final EntityDataAccessor<Boolean> HAS_CHEST = SynchedEntityData.defineId(Cat.class, EntityDataSerializers.BOOLEAN);
+
     @Unique
     protected SimpleContainer inventory;
 
@@ -78,7 +76,7 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
         }
 
         if (this.inventory != null) {
-            compoundTag.put("Items", this.inventory.createTag());
+            compoundTag.put("CCItems", this.inventory.createTag());
         }
     }
 
@@ -88,7 +86,7 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
         this.createInventory();
 
         if (this.hasChest()) {
-            this.inventory.fromTag(compoundTag.getList("Items", ListTag.TAG_LIST));
+            this.inventory.fromTag(compoundTag.getList("CCItems", ListTag.TAG_COMPOUND));
         }
     }
 
@@ -156,6 +154,14 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
                     cir.setReturnValue(InteractionResult.SUCCESS);
                 }
             }
+        }
+    }
+
+    @Override
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.hasChest()) {
+            this.removeChestContent(true);
         }
     }
 }
