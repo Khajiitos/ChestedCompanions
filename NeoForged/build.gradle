@@ -15,7 +15,7 @@ plugins {
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 base {
-    archivesName = mod_id + "-" + mod_version + "-" + minecraft_version_group + "-NEOFORGED"
+    archivesName = mod_id + "-" + mod_version + "-" + minecraft_version_group + "-NEOFORGE"
 }
 
 runs {
