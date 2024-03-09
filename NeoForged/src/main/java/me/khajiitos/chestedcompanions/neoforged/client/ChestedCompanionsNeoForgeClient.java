@@ -13,10 +13,10 @@ import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Wolf;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.common.NeoForge;
 
 public class ChestedCompanionsNeoForgeClient {
     public static void init() {
+        // TODO: find out what the alternative on NeoForge is
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ChestedCompanionsNeoForgeClient::addLayers);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ChestedCompanionsNeoForgeClient::registerLayerDefinitions);
     }

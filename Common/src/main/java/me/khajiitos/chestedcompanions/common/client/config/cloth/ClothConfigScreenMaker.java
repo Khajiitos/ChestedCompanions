@@ -1,9 +1,6 @@
 package me.khajiitos.chestedcompanions.common.client.config.cloth;
 
 import me.khajiitos.chestedcompanions.common.config.CCConfig;
-import me.khajiitos.chestedcompanions.common.util.Color;
-import me.khajiitos.chestedcompanions.common.util.ServerEntryRenderPos;
-import me.khajiitos.chestedcompanions.common.util.WorldEntryRenderPos;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
