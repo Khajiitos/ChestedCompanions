@@ -26,13 +26,13 @@ public class ChestedCompanionsForgeClient {
     }
 
     private static void addLayers(EntityRenderersEvent.AddLayers e) {
-        LivingEntityRenderer<Cat, CatModel<Cat>> catRenderer = e.getEntityRenderer(EntityType.CAT);
+        LivingEntityRenderer<Cat, CatModel<Cat>> catRenderer = e.getRenderer(EntityType.CAT);
 
         if (catRenderer != null) {
             catRenderer.addLayer(new CatChestLayer(catRenderer));
         }
 
-        LivingEntityRenderer<Wolf, WolfModel<Wolf>> wolfRenderer = e.getEntityRenderer(EntityType.WOLF);
+        LivingEntityRenderer<Wolf, WolfModel<Wolf>> wolfRenderer = e.getRenderer(EntityType.WOLF);
 
         if (wolfRenderer != null) {
             wolfRenderer.addLayer(new WolfChestLayer(wolfRenderer));
