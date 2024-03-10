@@ -38,8 +38,7 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
                 8, 8, 3,
                 1.f, 1.f, 1.f,
                 false,
-                64, 64,
-                Set.of(Direction.values())
+                64, 64
         );
 
         ModelPart.Cube right = new ModelPart.Cube(
@@ -48,8 +47,7 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
                 8, 8, 3,
                 1.f, 1.f, 1.f,
                 true,
-                64, 64,
-                Set.of(Direction.values())
+                64, 64
         );
 
         this.modelPart = new ModelPart(List.of(left, right), new HashMap<>());
