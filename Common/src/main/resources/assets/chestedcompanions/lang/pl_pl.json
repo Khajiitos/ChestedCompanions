@@ -1,0 +1,22 @@
+{
+  "chestedcompanions.config.header": "Chested Companions - Konfiguracja",
+  "chestedcompanions.config.category.general": "Główne",
+
+  "chestedcompanions.config.invertShiftToOpen.name": "Odwróć Shift",
+  "chestedcompanions.config.invertShiftToOpen.description": "Gdy właczone, zwykłe kliknięcie spowoduje, że zwierzę usiądzie, a z shift'em otworzy skrzynię",
+
+  "chestedcompanions.config.publicChest.name": "Publiczna skrzynia",
+  "chestedcompanions.config.publicChest.description": "Każdy może mieć dostęp do skrzyni, jak i ją dodawać i usuwać, nie tylko właściciel zwierzęcia",
+
+  "chestedcompanions.config.catInventoryCapacity.name": "Pojemność skrzyni kota",
+  "chestedcompanions.config.catInventoryCapacity.description": "Odpowiada za liczbę slotów w skrzyni kota",
+  "chestedcompanions.config.catInventoryCapacity.value.one_row": "Jeden rząd (9)",
+  "chestedcompanions.config.catInventoryCapacity.value.two_rows": "Dwa rzędy (18)",
+  "chestedcompanions.config.catInventoryCapacity.value.three_rows": "Trzy rzedy (27)",
+
+  "chestedcompanions.config.wolfInventoryCapacity.name": "Pojemność skrzyni wilka",
+  "chestedcompanions.config.wolfInventoryCapacity.description": "Odpowiada za liczbę slotów w skrzyni wilka",
+  "chestedcompanions.config.wolfInventoryCapacity.value.one_row": "Jeden rząd (9)",
+  "chestedcompanions.config.wolfInventoryCapacity.value.two_rows": "Dwa rzędy (18)",
+  "chestedcompanions.config.wolfInventoryCapacity.value.three_rows": "Trzy rzedy (27)"
+}

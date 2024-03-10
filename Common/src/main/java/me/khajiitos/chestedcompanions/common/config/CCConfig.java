@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.khajiitos.chestedcompanions.common.ChestedCompanions;
+import me.khajiitos.chestedcompanions.common.util.InventoryCapacity;
 
 import java.io.File;
 import java.io.FileReader;
@@ -19,7 +20,16 @@ public class CCConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Entry
-    public static final CCConfigValues.BooleanValue showServerPlayTime = new CCConfigValues.BooleanValue(false);
+    public static final CCConfigValues.BooleanValue invertShiftToOpen = new CCConfigValues.BooleanValue(false);
+
+    @Entry
+    public static final CCConfigValues.BooleanValue publicChest = new CCConfigValues.BooleanValue(false);
+
+    @Entry
+    public static final CCConfigValues.EnumValue<InventoryCapacity> catInventoryCapacity = new CCConfigValues.EnumValue<>(InventoryCapacity.ONE_ROW);
+
+    @Entry
+    public static final CCConfigValues.EnumValue<InventoryCapacity> wolfInventoryCapacity = new CCConfigValues.EnumValue<>(InventoryCapacity.ONE_ROW);
 
     public static void init() {
         if (!file.exists()) {
@@ -96,5 +106,7 @@ public class CCConfig {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    private @interface Entry { }
+    public @interface Entry {
+        String category() default "general";
+    }
 }

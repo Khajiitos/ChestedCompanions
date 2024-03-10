@@ -19,6 +19,9 @@
     ],
     "main": [
       "me.khajiitos.chestedcompanions.fabric.ChestedCompanionsFabric"
+    ],
+    "modmenu": [
+      "me.khajiitos.chestedcompanions.fabric.client.ModMenuApiImpl"
     ]
   },
   "mixins": [
