@@ -1,11 +1,15 @@
 package me.khajiitos.chestedcompanions.common.client.renderer.layer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import me.khajiitos.chestedcompanions.common.config.CCConfig;
 import me.khajiitos.chestedcompanions.common.mixin.accessor.WolfModelAccessor;
 import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.animal.Wolf;
+import org.jetbrains.annotations.NotNull;
 
 public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
     public WolfChestLayer(RenderLayerParent<Wolf, WolfModel<Wolf>> renderLayerParent) {
@@ -28,19 +32,39 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
     }
 
     @Override
-    protected void setupPosition(ModelPart chestModelPart) {
+    protected void setupPosition(Wolf wolf, ModelPart chestModelPart) {
         ModelPart wolfBody = this.getParentModelBody();
-
-        chestModelPart.x = wolfBody.x;
-        chestModelPart.y = wolfBody.y;
-        chestModelPart.z = wolfBody.z;
 
         chestModelPart.xRot = HALF_PI;
         chestModelPart.yRot = HALF_PI;
         chestModelPart.zRot = HALF_PI;
 
-        chestModelPart.xScale = 0.6f;
-        chestModelPart.yScale = 0.6f;
-        chestModelPart.zScale = 0.6f;
+        if (wolf.isBaby()) {
+            chestModelPart.x = wolfBody.x;
+            chestModelPart.y = wolfBody.y + (wolf.isInSittingPose() ? 4.f : 5.f);
+            chestModelPart.z = wolfBody.z - 1.f;
+            chestModelPart.xScale = 0.3f;
+            chestModelPart.yScale = 0.3f;
+            chestModelPart.zScale = 0.3f;
+        } else {
+            chestModelPart.x = wolfBody.x;
+            chestModelPart.y = wolfBody.y;
+            chestModelPart.z = wolfBody.z;
+            chestModelPart.xScale = 0.6f;
+            chestModelPart.yScale = 0.6f;
+            chestModelPart.zScale = 0.6f;
+        }
+    }
+
+    @Override
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull Wolf pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, float pPartialTicks) {
+        if (!CCConfig.hideWolfChest.get()) {
+            super.render(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
+        }
+        /* TODO: uncomment and make it work
+        if (CCConfig.showChestIconOnWolves.get()) {
+            this.renderChestIcon(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
+        }
+         */
     }
 }
