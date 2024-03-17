@@ -43,13 +43,12 @@ public class CCConfig {
     @Entry
     public static final CCConfigValues.BooleanValue allowChestOnBabyWolf = new CCConfigValues.BooleanValue(false);
 
-    /*
     @Entry(clientOnly = true)
     public static final CCConfigValues.BooleanValue showChestIconOnCats = new CCConfigValues.BooleanValue(false);
 
     @Entry(clientOnly = true)
     public static final CCConfigValues.BooleanValue showChestIconOnWolves = new CCConfigValues.BooleanValue(false);
-*/
+
     public static void init() {
         if (!file.exists()) {
             save();

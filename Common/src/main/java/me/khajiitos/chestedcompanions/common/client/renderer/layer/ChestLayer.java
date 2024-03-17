@@ -7,8 +7,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.CatRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -23,7 +25,6 @@ import java.util.Set;
 public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     // We will only use the chest from the donkey texture
     private static final ResourceLocation DONKEY_LOCATION = new ResourceLocation("textures/entity/horse/donkey.png");
-    private static final ResourceLocation CHEST_ICON_LOCATION = new ResourceLocation(ChestedCompanions.MOD_ID, "textures/chest_icon.png");
     protected static final float HALF_PI = (float)Math.PI / 2.f;
 
     private final ModelPart modelPart;
