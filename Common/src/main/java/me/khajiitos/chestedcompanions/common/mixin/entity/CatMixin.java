@@ -1,4 +1,4 @@
-package me.khajiitos.chestedcompanions.common.mixin;
+package me.khajiitos.chestedcompanions.common.mixin.entity;
 
 import me.khajiitos.chestedcompanions.common.config.CCConfig;
 import me.khajiitos.chestedcompanions.common.util.IChestEntity;
