@@ -9,10 +9,12 @@
   "refmap": "chestedcompanions.refmap.json",
   "client": [
     "accessor.CatModelAccessor",
-    "accessor.WolfModelAccessor"
+    "accessor.WolfModelAccessor",
+    "renderer.CatRendererMixin",
+    "renderer.WolfRendererMixin"
   ],
   "mixins": [
-    "CatMixin",
-    "WolfMixin"
+    "entity.CatMixin",
+    "entity.WolfMixin"
   ]
 }
