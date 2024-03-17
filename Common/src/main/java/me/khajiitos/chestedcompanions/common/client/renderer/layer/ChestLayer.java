@@ -1,6 +1,7 @@
 package me.khajiitos.chestedcompanions.common.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import me.khajiitos.chestedcompanions.common.ChestedCompanions;
 import me.khajiitos.chestedcompanions.common.util.IChestEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -22,6 +23,7 @@ import java.util.Set;
 public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     // We will only use the chest from the donkey texture
     private static final ResourceLocation DONKEY_LOCATION = new ResourceLocation("textures/entity/horse/donkey.png");
+    private static final ResourceLocation CHEST_ICON_LOCATION = new ResourceLocation(ChestedCompanions.MOD_ID, "textures/chest_icon.png");
     protected static final float HALF_PI = (float)Math.PI / 2.f;
 
     private final ModelPart modelPart;
@@ -56,7 +58,7 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
     }
 
     protected abstract ModelPart getParentModelBody();
-    protected abstract void setupPosition(ModelPart chestModelPart);
+    protected abstract void setupPosition(T entity, ModelPart chestModelPart);
 
     protected abstract Vec3i positionLeftChestCube();
     protected abstract Vec3i positionRightChestCube();
@@ -66,7 +68,36 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
             return;
         }
 
-        this.setupPosition(this.modelPart);
+        this.setupPosition(pEntity, this.modelPart);
         this.modelPart.render(poseStack, multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(DONKEY_LOCATION)), pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.f), 1.f, 1.f, 1.f, 1.f);
     }
+
+    /* TODO: uncomment and make it work
+    public void renderChestIcon(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull T pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, float pPartialTicks) {
+        VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutout(CHEST_ICON_LOCATION));
+
+        float minU = 0;
+        float maxU = 1;
+        float minV = 0;
+        float maxV = 1;
+
+        float scale = 1.f / 32.f; // Adjust as needed
+
+        int overlayCoords = LivingEntityRenderer.getOverlayCoords(pEntity, 0.f);
+
+        poseStack.pushPose();
+        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+        //poseStack.last().pose().setRotationXYZ(0, 0,0);
+        poseStack.scale(-scale, -scale, scale);
+
+        Matrix4f matrix4f = poseStack.last().pose();
+
+        vertexConsumer.vertex(matrix4f, 0, 0, 0).color(255, 255, 255, 255).uv(minU, minV).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
+        vertexConsumer.vertex(matrix4f, 0, 16, 0).color(255, 255, 255, 255).uv(minU, maxV).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
+        vertexConsumer.vertex(matrix4f, 16, 16, 0).color(255, 255, 255, 255).uv(maxU, maxV).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
+        vertexConsumer.vertex(matrix4f, 16, 0, 0).color(255, 255, 255, 255).uv(maxU, minV).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
+
+        poseStack.popPose();
+    }
+     */
 }

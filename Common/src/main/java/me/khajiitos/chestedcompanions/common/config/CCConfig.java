@@ -31,6 +31,25 @@ public class CCConfig {
     @Entry
     public static final CCConfigValues.EnumValue<InventoryCapacity> wolfInventoryCapacity = new CCConfigValues.EnumValue<>(InventoryCapacity.ONE_ROW);
 
+    @Entry(clientOnly = true)
+    public static final CCConfigValues.BooleanValue hideCatChest = new CCConfigValues.BooleanValue(false);
+
+    @Entry(clientOnly = true)
+    public static final CCConfigValues.BooleanValue hideWolfChest = new CCConfigValues.BooleanValue(false);
+
+    @Entry
+    public static final CCConfigValues.BooleanValue allowChestOnBabyCat = new CCConfigValues.BooleanValue(false);
+
+    @Entry
+    public static final CCConfigValues.BooleanValue allowChestOnBabyWolf = new CCConfigValues.BooleanValue(false);
+
+    /*
+    @Entry(clientOnly = true)
+    public static final CCConfigValues.BooleanValue showChestIconOnCats = new CCConfigValues.BooleanValue(false);
+
+    @Entry(clientOnly = true)
+    public static final CCConfigValues.BooleanValue showChestIconOnWolves = new CCConfigValues.BooleanValue(false);
+*/
     public static void init() {
         if (!file.exists()) {
             save();
@@ -108,5 +127,6 @@ public class CCConfig {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Entry {
         String category() default "general";
+        boolean clientOnly() default false;
     }
 }
