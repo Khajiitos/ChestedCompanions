@@ -29,6 +29,10 @@ public class ChestIconRenderer {
             return false;
         }
 
+        if (!Minecraft.renderNames()) {
+            return false;
+        }
+
         if (entity instanceof Cat) {
             return CCConfig.showChestIconOnCats.get();
         } else if (entity instanceof Wolf) {
@@ -44,8 +48,8 @@ public class ChestIconRenderer {
         int overlayCoords = LivingEntityRenderer.getOverlayCoords(pEntity, 0.f);
 
         poseStack.pushPose();
-        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.translate(0.0, yOffset, 0.0);
+        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.scale(-SCALE, -SCALE, SCALE);
 
         Matrix4f matrix4f = poseStack.last().pose();
