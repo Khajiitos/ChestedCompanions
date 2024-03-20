@@ -9,6 +9,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -22,7 +23,7 @@ public class ClothConfigScreenMaker {
     public static Screen create(Screen parent) {
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Component.translatable("chestedcompanions.config.header"))
+                .setTitle(new TranslatableComponent("chestedcompanions.config.header"))
                 .setSavingRunnable(CCConfig::save);
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
@@ -41,12 +42,12 @@ public class ClothConfigScreenMaker {
             return;
         }
 
-        ConfigCategory category = configBuilder.getOrCreateCategory(Component.translatable("chestedcompanions.config.category." + annotation.category()));
+        ConfigCategory category = configBuilder.getOrCreateCategory(new TranslatableComponent("chestedcompanions.config.category." + annotation.category()));
 
         try {
             String fieldName = field.getName();
-            Component name = Component.translatable(String.format("chestedcompanions.config.%s.name", fieldName));
-            Component description = Component.translatable(String.format("chestedcompanions.config.%s.description", fieldName));
+            Component name = new TranslatableComponent(String.format("chestedcompanions.config.%s.name", fieldName));
+            Component description = new TranslatableComponent(String.format("chestedcompanions.config.%s.description", fieldName));
 
             if (field.get(null) instanceof CCConfigValues.BooleanValue booleanValue) {
                 category.addEntry(entryBuilder.startBooleanToggle(name, booleanValue.get())
@@ -56,7 +57,7 @@ public class ClothConfigScreenMaker {
                         .build());
             } else if (field.get(null) instanceof CCConfigValues.EnumValue<? extends Enum<?>> enumValue) {
                 category.addEntry(entryBuilder.startEnumSelector(name, (Class<Enum<?>>)enumValue.get().getClass(), enumValue.get())
-                        .setEnumNameProvider(anEnum -> Component.translatable(String.format("chestedcompanions.config.%s.value.%s", fieldName, anEnum.toString().toLowerCase(Locale.ROOT))))
+                        .setEnumNameProvider(anEnum -> new TranslatableComponent(String.format("chestedcompanions.config.%s.value.%s", fieldName, anEnum.toString().toLowerCase(Locale.ROOT))))
                         .setTooltip(description)
                         .setDefaultValue(enumValue.getDefault())
                         .setSaveConsumer(enumValue::setUnchecked)

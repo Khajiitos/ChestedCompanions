@@ -32,7 +32,7 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
     }
 
     @Override
-    protected void setupPosition(Wolf wolf, ModelPart chestModelPart) {
+    protected void setupPosition(Wolf wolf, ModelPart chestModelPart, float scale) {
         ModelPart wolfBody = this.getParentModelBody();
 
         chestModelPart.xRot = HALF_PI;
@@ -43,16 +43,10 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
             chestModelPart.x = wolfBody.x;
             chestModelPart.y = wolfBody.y + (wolf.isInSittingPose() ? 4.f : 5.f);
             chestModelPart.z = wolfBody.z - 1.f;
-            chestModelPart.xScale = 0.3f;
-            chestModelPart.yScale = 0.3f;
-            chestModelPart.zScale = 0.3f;
         } else {
             chestModelPart.x = wolfBody.x;
             chestModelPart.y = wolfBody.y;
             chestModelPart.z = wolfBody.z;
-            chestModelPart.xScale = 0.6f;
-            chestModelPart.yScale = 0.6f;
-            chestModelPart.zScale = 0.6f;
         }
     }
 
@@ -61,10 +55,5 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
         if (!CCConfig.hideWolfChest.get()) {
             super.render(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
         }
-        /* TODO: uncomment and make it work
-        if (CCConfig.showChestIconOnWolves.get()) {
-            this.renderChestIcon(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
-        }
-         */
     }
 }

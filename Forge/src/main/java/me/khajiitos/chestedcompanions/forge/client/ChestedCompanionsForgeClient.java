@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Wolf;
-import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.client.ConfigGuiHandler;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -21,7 +21,7 @@ public class ChestedCompanionsForgeClient {
         modEventBus.addListener(ChestedCompanionsForgeClient::addLayers);
 
         if (ClothConfigCheck.isInstalled()) {
-            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(ClothConfigScreenMaker::create));
+            ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () -> new ConfigGuiHandler.ConfigGuiFactory(ClothConfigScreenMaker::create));
         }
     }
 

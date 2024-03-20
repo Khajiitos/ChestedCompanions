@@ -5,13 +5,12 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.HasCustomInventoryScreen;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface IChestEntity extends HasCustomInventoryScreen, MenuProvider {
+public interface IChestEntity extends MenuProvider {
     boolean hasChest();
     void setHasChest(boolean hasChest);
     int getInventorySlots();

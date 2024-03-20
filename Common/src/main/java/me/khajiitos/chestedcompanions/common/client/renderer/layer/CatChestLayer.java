@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import org.jetbrains.annotations.NotNull;
 
 public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
@@ -32,27 +33,23 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
     }
 
     @Override
-    protected void setupPosition(Cat cat, ModelPart chestModelPart) {
+    protected void setupPosition(Cat cat, ModelPart chestModelPart, float scale) {
         ModelPart catBody = this.getParentModelBody();
 
         chestModelPart.xRot = HALF_PI;
         chestModelPart.yRot = HALF_PI;
         chestModelPart.zRot = HALF_PI;
 
+        float invScale = 1.f / scale;
+
         if (cat.isBaby()) {
             chestModelPart.x = catBody.x;
-            chestModelPart.y = catBody.y + 6.f;
-            chestModelPart.z = catBody.z + 5.f;
-            chestModelPart.xScale = 0.3f;
-            chestModelPart.yScale = 0.3f;
-            chestModelPart.zScale = 0.3f;
+            chestModelPart.y = catBody.y + (6.f * invScale);
+            chestModelPart.z = catBody.z + (5.f * invScale);
         } else {
             chestModelPart.x = catBody.x;
             chestModelPart.y = catBody.y;
             chestModelPart.z = catBody.z;
-            chestModelPart.xScale = 0.6f;
-            chestModelPart.yScale = 0.6f;
-            chestModelPart.zScale = 0.6f;
         }
 
         // This is the rotation of the body when sitting.
@@ -69,11 +66,5 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
         if (!CCConfig.hideCatChest.get()) {
             super.render(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
         }
-
-        /* TODO: uncomment and make it work
-        if (CCConfig.showChestIconOnCats.get()) {
-            this.renderChestIcon(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
-        }
-        */
     }
 }
