@@ -2,7 +2,6 @@ package me.khajiitos.chestedcompanions.common.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import me.khajiitos.chestedcompanions.common.ChestedCompanions;
 import me.khajiitos.chestedcompanions.common.config.CCConfig;
 import me.khajiitos.chestedcompanions.common.util.IChestEntity;
@@ -15,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Wolf;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 
 public class ChestIconRenderer {
     private static final ResourceLocation CHEST_ICON_LOCATION = new ResourceLocation(ChestedCompanions.MOD_ID, "textures/chest_icon.png");
