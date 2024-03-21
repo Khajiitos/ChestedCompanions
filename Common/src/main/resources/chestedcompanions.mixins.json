@@ -10,6 +10,7 @@
   "client": [
     "accessor.CatModelAccessor",
     "accessor.WolfModelAccessor",
+    "model.ModelPartMixin",
     "renderer.CatRendererMixin",
     "renderer.WolfRendererMixin"
   ],

@@ -32,7 +32,7 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
     }
 
     @Override
-    protected void setupPosition(Wolf wolf, ModelPart chestModelPart, float scale) {
+    protected void setupPosition(Wolf wolf, ModelPart chestModelPart) {
         ModelPart wolfBody = this.getParentModelBody();
 
         chestModelPart.xRot = HALF_PI;

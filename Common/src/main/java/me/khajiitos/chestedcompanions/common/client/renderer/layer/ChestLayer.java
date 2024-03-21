@@ -24,6 +24,9 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
 
     private final ModelPart modelPart;
 
+    // Used in ModelPartMixin to scale the model part (not built in in 1.18.2, and the class is final)
+    public static float forceScaleForNextRender = -1.0f;
+
     public ChestLayer(RenderLayerParent<T, M> renderLayerParent) {
         super(renderLayerParent);
 
@@ -52,7 +55,7 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
     }
 
     protected abstract ModelPart getParentModelBody();
-    protected abstract void setupPosition(T entity, ModelPart chestModelPart, float scale);
+    protected abstract void setupPosition(T entity, ModelPart chestModelPart);
 
     protected abstract Vec3i positionLeftChestCube();
     protected abstract Vec3i positionRightChestCube();
@@ -66,11 +69,9 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
             return;
         }
 
-        float scale = getScale(pEntity);
-        this.setupPosition(pEntity, this.modelPart, scale);
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, scale);
+        this.setupPosition(pEntity, this.modelPart);
+        forceScaleForNextRender = getScale(pEntity);
         this.modelPart.render(poseStack, multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(DONKEY_LOCATION)), pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.f), 1.f, 1.f, 1.f, 1.f);
-        poseStack.popPose();
+        forceScaleForNextRender = -1.0f;
     }
 }
