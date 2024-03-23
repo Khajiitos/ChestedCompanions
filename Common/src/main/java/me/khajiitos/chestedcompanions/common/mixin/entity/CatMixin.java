@@ -40,6 +40,9 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
     @Unique
     protected PetChestContainer<Cat> inventory;
 
+    @Unique
+    protected ItemStack chestItemStack;
+
     protected CatMixin(EntityType<? extends TamableAnimal> $$0, Level $$1) {
         super($$0, $$1);
     }
@@ -73,6 +76,10 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
     public void addAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
         if (this.hasChest()) {
             compoundTag.putBoolean("HasChest", this.hasChest());
+
+            CompoundTag chestCompoundTag = new CompoundTag();
+            (this.chestItemStack != null ? this.chestItemStack : new ItemStack(Items.CHEST)).save(chestCompoundTag);
+            compoundTag.put("ChestItem", chestCompoundTag);
         }
 
         if (this.inventory != null) {
@@ -86,14 +93,23 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
         this.createInventory();
 
         if (this.hasChest()) {
+            this.createInventory();
             this.inventory.fromTag(compoundTag.getList("CCItems", ListTag.TAG_COMPOUND));
+
+            this.chestItemStack = compoundTag.contains("ChestItem", CompoundTag.TAG_COMPOUND) ? ItemStack.of(compoundTag.getCompound("ChestItem")) : ItemStack.EMPTY;
+
+            if (this.chestItemStack == ItemStack.EMPTY) {
+                this.chestItemStack = new ItemStack(Items.CHEST, 1);
+            }
         }
     }
 
+    @Unique
     private void createInventory() {
         this.inventory = new PetChestContainer<>((Cat)(Object)this, this.getInventorySlots(), this.inventory);
     }
 
+    @Unique
     private void removeChestContent(boolean dropChest) {
         if (this.inventory != null) {
             for (int i = 0; i < this.inventory.getContainerSize(); i++) {
@@ -105,9 +121,10 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
             }
 
             if (dropChest) {
-                this.spawnAtLocation(new ItemStack(Items.CHEST), 0.25f);
+                this.spawnAtLocation(this.chestItemStack != null ? this.chestItemStack : new ItemStack(Items.CHEST), 0.25f);
             }
 
+            this.chestItemStack = null;
             this.inventory = null;
         }
     }
@@ -129,7 +146,7 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
 
     @Inject(at = @At("HEAD"), method = "mobInteract", cancellable = true)
     public void mobInteract(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (!this.level.isClientSide && (!this.isBaby() || CCConfig.allowChestOnBabyCat.get()) && player.isCrouching() == CCConfig.invertShiftToOpen.get() && (CCConfig.publicChest.get() || player.getUUID().equals(this.getOwnerUUID()))) {
+        if (!this.level.isClientSide && player.isCrouching() == CCConfig.invertShiftToOpen.get() && (CCConfig.publicChest.get() || player.getUUID().equals(this.getOwnerUUID()))) {
             if (this.hasChest()) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
 
@@ -143,10 +160,13 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
                     this.openCustomInventoryScreen(player);
                 }
                 cir.setReturnValue(InteractionResult.SUCCESS);
-            } else {
+            } else if (CCConfig.allowChestOnCats.get() && (!this.isBaby() || CCConfig.allowChestOnBabyCat.get())) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
 
                 if (inHand.is(Items.CHEST)) {
+                    this.chestItemStack = inHand.copy();
+                    this.chestItemStack.setCount(1);
+
                     if (!player.getAbilities().instabuild) {
                         inHand.shrink(1);
                     }

@@ -2,6 +2,12 @@
   "chestedcompanions.config.header": "Chested Companions Config",
   "chestedcompanions.config.category.general": "General",
 
+  "chestedcompanions.config.allowChestOnCats.name": "Allow Chests On Cats",
+  "chestedcompanions.config.allowChestOnCats.description": "If enabled, chests can be put on cats",
+
+  "chestedcompanions.config.allowChestOnWolves.name": "Allow Chests On Wolves",
+  "chestedcompanions.config.allowChestOnWolves.description": "If enabled, chests can be put on wolves",
+
   "chestedcompanions.config.invertShiftToOpen.name": "Invert Shift To Open",
   "chestedcompanions.config.invertShiftToOpen.description": "If enabled, normal click will tell the pet to sit, and shift click will open the chest",
 
