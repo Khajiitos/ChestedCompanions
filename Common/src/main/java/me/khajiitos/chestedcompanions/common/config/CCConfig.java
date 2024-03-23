@@ -20,6 +20,12 @@ public class CCConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Entry
+    public static final CCConfigValues.BooleanValue allowChestOnCats = new CCConfigValues.BooleanValue(true);
+
+    @Entry
+    public static final CCConfigValues.BooleanValue allowChestOnWolves = new CCConfigValues.BooleanValue(true);
+
+    @Entry
     public static final CCConfigValues.BooleanValue invertShiftToOpen = new CCConfigValues.BooleanValue(false);
 
     @Entry
