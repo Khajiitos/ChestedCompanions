@@ -69,11 +69,5 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
         if (!CCConfig.hideCatChest.get()) {
             super.render(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
         }
-
-        /* TODO: uncomment and make it work
-        if (CCConfig.showChestIconOnCats.get()) {
-            this.renderChestIcon(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
-        }
-        */
     }
 }

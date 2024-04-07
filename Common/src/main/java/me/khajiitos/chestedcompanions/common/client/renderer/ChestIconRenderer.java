@@ -25,7 +25,7 @@ public class ChestIconRenderer {
             return false;
         }
 
-        if (!(entity instanceof IChestEntity chestEntity) || !chestEntity.hasChest()) {
+        if (!(entity instanceof IChestEntity chestEntity) || !chestEntity.chestedCompanions$hasChest()) {
             return false;
         }
 
