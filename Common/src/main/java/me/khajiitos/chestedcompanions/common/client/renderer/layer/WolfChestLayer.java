@@ -61,10 +61,5 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
         if (!CCConfig.hideWolfChest.get()) {
             super.render(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
         }
-        /* TODO: uncomment and make it work
-        if (CCConfig.showChestIconOnWolves.get()) {
-            this.renderChestIcon(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
-        }
-         */
     }
 }

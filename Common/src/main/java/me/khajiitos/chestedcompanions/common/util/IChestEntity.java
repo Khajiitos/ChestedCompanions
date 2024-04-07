@@ -1,7 +1,9 @@
 package me.khajiitos.chestedcompanions.common.util;
 
+import me.khajiitos.chestedcompanions.common.ChestedCompanions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -12,20 +14,29 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface IChestEntity extends HasCustomInventoryScreen, MenuProvider {
-    boolean hasChest();
-    void setHasChest(boolean hasChest);
-    int getInventorySlots();
-    Container getInventory();
+    InventoryCapacity chestedCompanions$getInventoryCapacity();
+    PetChestContainer<?> chestedCompanions$getInventory();
+    void chestedCompanions$setChestItemStack(ItemStack itemStack);
+    ItemStack chestedCompanions$getChestItemStack();
+    void chestedCompanions$createInventory();
+    void chestedCompanions$removeInventory();
+    void chestedCompanions$removeChestContent(boolean dropChest);
+    boolean chestedCompanions$allowChest();
+    boolean chestedCompanions$allowChestOnBaby();
+
+    default boolean chestedCompanions$hasChest() {
+        return !this.chestedCompanions$getChestItemStack().isEmpty();
+    }
+
+    default boolean chestedCompanions$isValidChestItem(ItemStack itemStack) {
+        return itemStack.is(ChestedCompanions.PET_CHEST_ITEM);
+    }
 
     class PetChestContainer<T extends TamableAnimal> extends SimpleContainer {
         private final T pet;
 
-        public PetChestContainer(T pet, int inventorySlots) {
-            this(pet, inventorySlots, null);
-        }
-
         // Used for increasing the size of the container, or shrinking it and dropping items
-        public PetChestContainer(T pet, int inventorySlots, @Nullable PetChestContainer<T> oldContainer) {
+        public PetChestContainer(T pet, int inventorySlots, @Nullable PetChestContainer<?> oldContainer) {
             super(inventorySlots);
             this.pet = pet;
 

@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -25,7 +26,7 @@ public class ChestIconRenderer {
             return false;
         }
 
-        if (!(entity instanceof IChestEntity chestEntity) || !chestEntity.hasChest()) {
+        if (!(entity instanceof IChestEntity chestEntity) || !chestEntity.chestedCompanions$hasChest()) {
             return false;
         }
 
