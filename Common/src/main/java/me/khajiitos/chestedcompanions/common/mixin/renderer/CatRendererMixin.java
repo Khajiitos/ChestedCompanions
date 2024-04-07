@@ -22,7 +22,6 @@ public abstract class CatRendererMixin extends MobRenderer<Cat, CatModel<Cat>> {
         super.render(cat, $$1, $$2, poseStack, multiBufferSource, packedLight);
 
         if (ChestIconRenderer.shouldRender(cat)) {
-
             ChestIconRenderer.render(poseStack, multiBufferSource, packedLight, cat, cat.getBoundingBox().getYsize() + 0.25);
         }
     }
