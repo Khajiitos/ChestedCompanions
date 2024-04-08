@@ -9,10 +9,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.CatRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -20,6 +17,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +53,8 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
         }
     }
 
-    private final ModelPart modelPart;
+    private final ModelPart modelPartLeft;
+    private final ModelPart modelPartRight;
 
     public ChestLayer(RenderLayerParent<T, M> renderLayerParent) {
         super(renderLayerParent);
@@ -78,16 +77,17 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
                 positionRightChestCube.getX(), positionRightChestCube.getY(), positionRightChestCube.getZ(),
                 8, 8, 3,
                 1.f, 1.f, 1.f,
-                true,
+                false,
                 22, 11,
                 Set.of(Direction.values())
         );
 
-        this.modelPart = new ModelPart(List.of(left, right), new HashMap<>());
+        this.modelPartLeft = new ModelPart(List.of(left), new HashMap<>());
+        this.modelPartRight = new ModelPart(List.of(right), new HashMap<>());
     }
 
     protected abstract ModelPart getParentModelBody();
-    protected abstract void setupPosition(T entity, ModelPart chestModelPart);
+    protected abstract void setupPosition(T entity, ModelPart leftChestModelPart, ModelPart rightChestModelPart);
 
     protected abstract Vec3i positionLeftChestCube();
     protected abstract Vec3i positionRightChestCube();
@@ -97,7 +97,8 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
             return;
         }
 
-        this.setupPosition(pEntity, this.modelPart);
-        this.modelPart.render(poseStack, multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(getResourceLocation(chestEntity.chestedCompanions$getChestItemStack()))), pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.f), 1.f, 1.f, 1.f, 1.f);
+        this.setupPosition(pEntity, this.modelPartLeft, this.modelPartRight);
+        this.modelPartLeft.render(poseStack, multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(getResourceLocation(chestEntity.chestedCompanions$getChestItemStack()))), pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.f), 1.f, 1.f, 1.f, 1.f);
+        this.modelPartRight.render(poseStack, multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(getResourceLocation(chestEntity.chestedCompanions$getChestItemStack()))), pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.f), 1.f, 1.f, 1.f, 1.f);
     }
 }

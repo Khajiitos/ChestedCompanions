@@ -32,28 +32,35 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
     }
 
     @Override
-    protected void setupPosition(Wolf wolf, ModelPart chestModelPart) {
+    protected void setupPosition(Wolf wolf, ModelPart leftChestModelPart, ModelPart rightChestModelPart) {
         ModelPart wolfBody = this.getParentModelBody();
 
-        chestModelPart.xRot = HALF_PI;
-        chestModelPart.yRot = HALF_PI;
-        chestModelPart.zRot = HALF_PI;
+        // Setting rotation for both left and right chest model parts
+        rightChestModelPart.xRot = HALF_PI;
+        leftChestModelPart.yRot = rightChestModelPart.yRot = HALF_PI;
+        leftChestModelPart.zRot = rightChestModelPart.zRot = HALF_PI;
+
+        leftChestModelPart.xRot = -HALF_PI;
 
         if (wolf.isBaby()) {
-            chestModelPart.x = wolfBody.x;
-            chestModelPart.y = wolfBody.y + (wolf.isInSittingPose() ? 4.f : 5.f);
-            chestModelPart.z = wolfBody.z - 1.f;
-            chestModelPart.xScale = 0.3f;
-            chestModelPart.yScale = 0.3f;
-            chestModelPart.zScale = 0.3f;
+            // Adjusting position for baby wolf
+            leftChestModelPart.x = rightChestModelPart.x = wolfBody.x;
+            leftChestModelPart.y = rightChestModelPart.y = wolfBody.y + (wolf.isInSittingPose() ? 4.f : 5.f);
+            leftChestModelPart.z = rightChestModelPart.z = wolfBody.z - 1.f;
+            leftChestModelPart.xScale = rightChestModelPart.xScale = 0.3f;
+            leftChestModelPart.yScale = rightChestModelPart.yScale = 0.3f;
+            leftChestModelPart.zScale = rightChestModelPart.zScale = 0.3f;
         } else {
-            chestModelPart.x = wolfBody.x;
-            chestModelPart.y = wolfBody.y;
-            chestModelPart.z = wolfBody.z;
-            chestModelPart.xScale = 0.6f;
-            chestModelPart.yScale = 0.6f;
-            chestModelPart.zScale = 0.6f;
+            // Adjusting position for adult wolf
+            leftChestModelPart.x = rightChestModelPart.x = wolfBody.x;
+            leftChestModelPart.y = rightChestModelPart.y = wolfBody.y;
+            leftChestModelPart.z = rightChestModelPart.z = wolfBody.z;
+            leftChestModelPart.xScale = rightChestModelPart.xScale = 0.6f;
+            leftChestModelPart.yScale = rightChestModelPart.yScale = 0.6f;
+            leftChestModelPart.zScale = rightChestModelPart.zScale = 0.6f;
         }
+
+        leftChestModelPart.x += 8;
     }
 
     @Override
