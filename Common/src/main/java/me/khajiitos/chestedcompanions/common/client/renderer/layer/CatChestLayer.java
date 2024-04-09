@@ -30,6 +30,7 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
     protected Vec3i positionRightChestCube() {
         return new Vec3i(-22, 4, -7);
     }
+
     @Override
     protected void setupPosition(Cat cat, ModelPart leftChestModelPart, ModelPart rightChestModelPart) {
         ModelPart catBody = this.getParentModelBody();
