@@ -62,6 +62,13 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
             chestModelPart.y += cat.isBaby() ? 6.0f : 8.0f;
             chestModelPart.z -= 6.0f;
         }
+
+        // Likely Fresh Animations, adjust positions for it
+        // funnily enough, this isn't required for wolves
+        if (catBody.hasChild("EMF_body")) {
+            chestModelPart.z -= 10.0f;
+            chestModelPart.y -= 4.0f;
+        }
     }
 
     @Override
