@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +16,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -26,7 +26,7 @@ public class ChestEntityCommon {
             if (chestEntity.chestedCompanions$hasChest()) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
                 if (inHand.is(Items.SHEARS)) {
-                    inHand.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(interactionHand));
+                    inHand.hurtAndBreak(1, player, LivingEntity.getSlotForHand(interactionHand));
 
                     chestEntity.chestedCompanions$removeChestContent(!player.getAbilities().instabuild);
                     chestEntity.playSound(SoundEvents.DONKEY_CHEST, 1.0F, 1.5F);
@@ -55,13 +55,11 @@ public class ChestEntityCommon {
     public static <T extends TamableAnimal & IChestEntity> void addAdditionalSaveData(T chestEntity, CompoundTag compoundTag) {
         if (chestEntity.chestedCompanions$hasChest()) {
             ItemStack chestItemStack = chestEntity.chestedCompanions$getChestItemStack();
-            CompoundTag chestCompoundTag = new CompoundTag();
-            chestItemStack.save(chestCompoundTag);
-            compoundTag.put("ChestItem", chestCompoundTag);
+            compoundTag.put("ChestItem", chestItemStack.save(chestEntity.registryAccess()));
         }
 
         if (chestEntity.chestedCompanions$getInventory() != null) {
-            compoundTag.put("CCItems", chestEntity.chestedCompanions$getInventory().createTag());
+            compoundTag.put("CCItems", chestEntity.chestedCompanions$getInventory().createTag(chestEntity.registryAccess()));
         }
     }
 
@@ -76,7 +74,7 @@ public class ChestEntityCommon {
                 // Probably loaded a world after removing a mod - replace with vanilla chest
                 chestItemStack = new ItemStack(Items.CHEST);
             } else {
-                chestItemStack = ItemStack.of(itemTag);
+                chestItemStack = ItemStack.parseOptional(chestEntity.registryAccess(), itemTag);
             }
         } else if (compoundTag.getBoolean("HasChest")) {
             // Loaded the mod with an old version of the mod that didn't keep the ItemStack - replace with vanilla chest
@@ -89,7 +87,7 @@ public class ChestEntityCommon {
         if (!chestItemStack.isEmpty()) {
             chestEntity.chestedCompanions$setChestItemStack(chestItemStack);
             chestEntity.chestedCompanions$createInventory();
-            chestEntity.chestedCompanions$getInventory().fromTag(compoundTag.getList("CCItems", ListTag.TAG_COMPOUND));
+            chestEntity.chestedCompanions$getInventory().fromTag(compoundTag.getList("CCItems", ListTag.TAG_COMPOUND), chestEntity.registryAccess());
         }
     }
 

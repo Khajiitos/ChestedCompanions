@@ -4,6 +4,7 @@ import me.khajiitos.chestedcompanions.common.client.config.cloth.ClothConfigChec
 import me.khajiitos.chestedcompanions.common.client.config.cloth.ClothConfigScreenMaker;
 import me.khajiitos.chestedcompanions.common.client.renderer.layer.CatChestLayer;
 import me.khajiitos.chestedcompanions.common.client.renderer.layer.WolfChestLayer;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.CatModel;
 import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -15,13 +16,15 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 
+import java.util.function.Function;
+
 public class ChestedCompanionsForgeClient {
 
     public static void init(IEventBus modEventBus) {
         modEventBus.addListener(ChestedCompanionsForgeClient::addLayers);
 
         if (ClothConfigCheck.isInstalled()) {
-            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(ClothConfigScreenMaker::create));
+            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((Function<Screen, Screen>) ClothConfigScreenMaker::create));
         }
     }
 

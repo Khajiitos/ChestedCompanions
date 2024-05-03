@@ -71,8 +71,8 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
     }
 
     @Inject(at = @At("TAIL"), method = "defineSynchedData")
-    public void defineSynchedData(CallbackInfo ci) {
-        this.getEntityData().define(chestedCompanions$CHEST_ITEM, ItemStack.EMPTY);
+    public void defineSynchedData(SynchedEntityData.Builder builder, CallbackInfo ci) {
+        builder.define(chestedCompanions$CHEST_ITEM, ItemStack.EMPTY);
     }
 
     @Inject(at = @At("TAIL"), method = "addAdditionalSaveData")
@@ -88,7 +88,7 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
     @Unique
     @Override
     public void chestedCompanions$createInventory() {
-        this.chestedCompanions$inventory = new IChestEntity.PetChestContainer<>(this, this.chestedCompanions$getInventoryCapacity().containerRows * 9, this.chestedCompanions$inventory);
+        this.chestedCompanions$inventory = new IChestEntity.PetChestContainer<>(this, this.chestedCompanions$getInventoryCapacity().containerRows * 9, this.chestedCompanions$inventory, this.registryAccess());
     }
 
     @Override

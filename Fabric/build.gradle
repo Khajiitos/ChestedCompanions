@@ -3,8 +3,8 @@ plugins {
     id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
 
 base {
     archivesName = mod_id + "-" + mod_version + "-" + minecraft_version_group + "-FABRIC"
@@ -40,8 +40,8 @@ dependencies {
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modImplementation "curse.maven:more-chest-variants-lieonlion-858032:${mcv_artifact_fabric}"
-    modImplementation "curse.maven:quad-932715:${quad_artifact_fabric}"
+    modCompileOnly "curse.maven:more-chest-variants-lieonlion-858032:${mcv_artifact_fabric}"
+    modCompileOnly "curse.maven:quad-932715:${quad_artifact_fabric}"
     implementation project(":Common")
 }
 
@@ -73,7 +73,7 @@ tasks.withType(Javadoc).configureEach {
 
 // Ideally this project would use Gradle from the root project
 tasks.register('wrapper', Wrapper) {
-    gradleVersion = '8.6'
+    gradleVersion = '8.7'
 }
 
 jar.finalizedBy('remapJar')
