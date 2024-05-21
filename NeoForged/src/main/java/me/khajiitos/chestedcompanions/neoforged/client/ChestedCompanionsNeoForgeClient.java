@@ -11,16 +11,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Wolf;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 public class ChestedCompanionsNeoForgeClient {
-    public static void init(IEventBus modEventBus) {
-        modEventBus.addListener(ChestedCompanionsNeoForgeClient::addLayers);
+    public static void init(ModContainer modContainer) {
+        IEventBus eventBus = modContainer.getEventBus();
+
+        if (eventBus != null) {
+            eventBus.addListener(ChestedCompanionsNeoForgeClient::addLayers);
+        }
 
         if (ClothConfigCheck.isInstalled()) {
-            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ClothConfigScreenMaker::create);
+            modContainer.registerExtensionPoint(IConfigScreenFactory.class,  ClothConfigScreenMaker::create);
         }
     }
 
