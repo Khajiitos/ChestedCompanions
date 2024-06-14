@@ -13,12 +13,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Wolf;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class ChestIconRenderer {
-    private static final ResourceLocation CHEST_ICON_LOCATION = new ResourceLocation(ChestedCompanions.MOD_ID, "textures/chest_icon.png");
+    private static final ResourceLocation CHEST_ICON_LOCATION = ResourceLocation.fromNamespaceAndPath(ChestedCompanions.MOD_ID, "textures/chest_icon.png");
     private static final float SCALE = 1.f / 64.f;
 
     public static <T extends LivingEntity> boolean shouldRender(T entity) {
@@ -55,10 +54,10 @@ public class ChestIconRenderer {
 
         Matrix4f matrix4f = poseStack.last().pose();
 
-        vertexConsumer.vertex(matrix4f, 0, 0, 0).color(255, 255, 255, 255).uv(0.0f, 0.0f).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
-        vertexConsumer.vertex(matrix4f, 0, 16, 0).color(255, 255, 255, 255).uv(0.0f, 1.0f).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
-        vertexConsumer.vertex(matrix4f, 16, 16, 0).color(255, 255, 255, 255).uv(1.0f, 1.0f).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
-        vertexConsumer.vertex(matrix4f, 16, 0, 0).color(255, 255, 255, 255).uv(1.0f, 0.0f).overlayCoords(overlayCoords).uv2(pPackedLight).normal(1.0F, 1.0F, 1.0F).endVertex();
+        vertexConsumer.addVertex(matrix4f, 0, 0, 0).setColor(255, 255, 255, 255).setUv(0.0f, 0.0f).setOverlay(overlayCoords).setLight(pPackedLight).setNormal(1.0F, 1.0F, 1.0F);
+        vertexConsumer.addVertex(matrix4f, 0, 16, 0).setColor(255, 255, 255, 255).setUv(0.0f, 1.0f).setOverlay(overlayCoords).setLight(pPackedLight).setNormal(1.0F, 1.0F, 1.0F);
+        vertexConsumer.addVertex(matrix4f, 16, 16, 0).setColor(255, 255, 255, 255).setUv(1.0f, 1.0f).setOverlay(overlayCoords).setLight(pPackedLight).setNormal(1.0F, 1.0F, 1.0F);
+        vertexConsumer.addVertex(matrix4f, 16, 0, 0).setColor(255, 255, 255, 255).setUv(1.0f, 0.0f).setOverlay(overlayCoords).setLight(pPackedLight).setNormal(1.0F, 1.0F, 1.0F);
 
         poseStack.popPose();
     }

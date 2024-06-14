@@ -68,7 +68,7 @@ public class ChestEntityCommon {
 
         ItemStack chestItemStack;
         if (itemTag.contains("id", CompoundTag.TAG_STRING)) {
-            ResourceLocation resourceLocation = new ResourceLocation(itemTag.getString("id"));
+            ResourceLocation resourceLocation = ResourceLocation.parse(itemTag.getString("id"));
 
             if (!BuiltInRegistries.ITEM.containsKey(resourceLocation)) {
                 // Probably loaded a world after removing a mod - replace with vanilla chest

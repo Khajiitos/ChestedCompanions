@@ -2,20 +2,16 @@ package me.khajiitos.chestedcompanions.common.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import me.khajiitos.chestedcompanions.common.ChestedCompanions;
-import me.khajiitos.chestedcompanions.common.util.DefaultedHashMap;
 import me.khajiitos.chestedcompanions.common.util.IChestEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.CatRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
-import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +27,7 @@ import java.util.Set;
 
 public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     protected static final float HALF_PI = (float)Math.PI / 2.f;
-    private static final ResourceLocation BASE_CHEST_LOCATION = new ResourceLocation(ChestedCompanions.MOD_ID, "textures/chest/chest.png");
+    private static final ResourceLocation BASE_CHEST_LOCATION = ResourceLocation.fromNamespaceAndPath(ChestedCompanions.MOD_ID, "textures/chest/chest.png");
     private static final HashMap<Item, ResourceLocation> CHEST_TEXTURES = new HashMap<>();
 
     private static ResourceLocation getResourceLocation(@Nullable ItemStack chestItem) {
@@ -42,7 +38,7 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
         if (!CHEST_TEXTURES.containsKey(chestItem.getItem())) {
             ResourceLocation itemLocation = BuiltInRegistries.ITEM.getKey(chestItem.getItem());
 
-            ResourceLocation textureLocation = new ResourceLocation(ChestedCompanions.MOD_ID, "textures/chest/" + (itemLocation.getNamespace().equals("minecraft") ? "" : itemLocation.getNamespace() + "/") + itemLocation.getPath() + ".png");
+            ResourceLocation textureLocation = ResourceLocation.fromNamespaceAndPath(ChestedCompanions.MOD_ID, "textures/chest/" + (itemLocation.getNamespace().equals("minecraft") ? "" : itemLocation.getNamespace() + "/") + itemLocation.getPath() + ".png");
             if (Minecraft.getInstance().getResourceManager().getResource(textureLocation).isPresent()) {
                 CHEST_TEXTURES.put(chestItem.getItem(), textureLocation);
             } else {
@@ -98,6 +94,6 @@ public abstract class ChestLayer<T extends LivingEntity, M extends EntityModel<T
         }
 
         this.setupPosition(pEntity, this.modelPart);
-        this.modelPart.render(poseStack, multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(getResourceLocation(chestEntity.chestedCompanions$getChestItemStack()))), pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.f), 1.f, 1.f, 1.f, 1.f);
+        this.modelPart.render(poseStack, multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(getResourceLocation(chestEntity.chestedCompanions$getChestItemStack()))), pPackedLight, LivingEntityRenderer.getOverlayCoords(pEntity, 0.f));
     }
 }
