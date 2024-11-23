@@ -11,7 +11,9 @@
     "accessor.CatModelAccessor",
     "accessor.WolfModelAccessor",
     "renderer.CatRendererMixin",
-    "renderer.WolfRendererMixin"
+    "renderer.WolfRendererMixin",
+    "renderstate.CatRenderStateMixin",
+    "renderstate.WolfRenderStateMixin"
   ],
   "mixins": [
     "entity.CatMixin",

@@ -5,6 +5,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -97,15 +98,15 @@ public class ChestEntityCommon {
             for (int i = 0; i < inventory.getContainerSize(); i++) {
                 ItemStack itemStack = inventory.getItem(i);
 
-                if (!itemStack.isEmpty()) {
-                    chestEntity.spawnAtLocation(itemStack, 0.25f);
+                if (!itemStack.isEmpty() && chestEntity.level() instanceof ServerLevel serverLevel) {
+                    chestEntity.spawnAtLocation(serverLevel, itemStack, 0.25f);
                 }
             }
 
             if (dropChest) {
                 ItemStack chestItemStack = chestEntity.chestedCompanions$getChestItemStack();
-                if (!chestItemStack.isEmpty()) {
-                    chestEntity.spawnAtLocation(chestItemStack, 0.25f);
+                if (!chestItemStack.isEmpty() && chestEntity.level() instanceof ServerLevel serverLevel) {
+                    chestEntity.spawnAtLocation(serverLevel, chestItemStack, 0.25f);
                 }
             }
 

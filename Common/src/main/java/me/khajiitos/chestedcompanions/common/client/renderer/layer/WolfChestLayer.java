@@ -7,12 +7,12 @@ import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.state.WolfRenderState;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.animal.Wolf;
 import org.jetbrains.annotations.NotNull;
 
-public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
-    public WolfChestLayer(RenderLayerParent<Wolf, WolfModel<Wolf>> renderLayerParent) {
+public class WolfChestLayer extends ChestLayer<WolfRenderState, WolfModel> {
+    public WolfChestLayer(RenderLayerParent<WolfRenderState, WolfModel> renderLayerParent) {
         super(renderLayerParent);
     }
 
@@ -32,16 +32,16 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
     }
 
     @Override
-    protected void setupPosition(Wolf wolf, ModelPart chestModelPart) {
+    protected void setupPosition(WolfRenderState wolfRenderState, ModelPart chestModelPart) {
         ModelPart wolfBody = this.getParentModelBody();
 
         chestModelPart.xRot = HALF_PI;
         chestModelPart.yRot = HALF_PI;
         chestModelPart.zRot = HALF_PI;
 
-        if (wolf.isBaby()) {
+        if (wolfRenderState.isBaby) {
             chestModelPart.x = wolfBody.x;
-            chestModelPart.y = wolfBody.y + (wolf.isInSittingPose() ? 4.f : 5.f);
+            chestModelPart.y = wolfBody.y + (wolfRenderState.isSitting ? 1.0f : 0.0f);
             chestModelPart.z = wolfBody.z - 1.f;
             chestModelPart.xScale = 0.3f;
             chestModelPart.yScale = 0.3f;
@@ -57,9 +57,9 @@ public class WolfChestLayer extends ChestLayer<Wolf, WolfModel<Wolf>> {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull Wolf pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, float pPartialTicks) {
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull WolfRenderState renderState, float v, float v1) {
         if (!CCConfig.hideWolfChest.get()) {
-            super.render(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
+            super.render(poseStack, multiBufferSource, pPackedLight, renderState, v, v1);
         }
     }
 }

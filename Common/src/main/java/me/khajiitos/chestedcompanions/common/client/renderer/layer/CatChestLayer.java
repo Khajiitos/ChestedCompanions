@@ -7,12 +7,12 @@ import net.minecraft.client.model.CatModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.state.CatRenderState;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.entity.animal.Cat;
 import org.jetbrains.annotations.NotNull;
 
-public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
-    public CatChestLayer(RenderLayerParent<Cat, CatModel<Cat>> renderLayerParent) {
+public class CatChestLayer extends ChestLayer<CatRenderState, CatModel> {
+    public CatChestLayer(RenderLayerParent<CatRenderState, CatModel> renderLayerParent) {
         super(renderLayerParent);
     }
 
@@ -32,23 +32,23 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
     }
 
     @Override
-    protected void setupPosition(Cat cat, ModelPart chestModelPart) {
+    protected void setupPosition(CatRenderState catRenderState, ModelPart chestModelPart) {
         ModelPart catBody = this.getParentModelBody();
 
         chestModelPart.xRot = HALF_PI;
         chestModelPart.yRot = HALF_PI;
         chestModelPart.zRot = HALF_PI;
 
-        if (cat.isBaby()) {
+        if (catRenderState.isBaby) {
             chestModelPart.x = catBody.x;
-            chestModelPart.y = catBody.y + 6.f;
-            chestModelPart.z = catBody.z + 5.f;
+            chestModelPart.y = catBody.y;
+            chestModelPart.z = catBody.z;
             chestModelPart.xScale = 0.3f;
             chestModelPart.yScale = 0.3f;
             chestModelPart.zScale = 0.3f;
         } else {
             chestModelPart.x = catBody.x;
-            chestModelPart.y = catBody.y;
+            chestModelPart.y = catBody.y + 2.f;
             chestModelPart.z = catBody.z;
             chestModelPart.xScale = 0.6f;
             chestModelPart.yScale = 0.6f;
@@ -59,8 +59,8 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
         // Unless I find a better way, I will have to manually
         // adjust the chest's position.
         if (catBody.xRot == HALF_PI / 2) {
-            chestModelPart.y += cat.isBaby() ? 6.0f : 8.0f;
-            chestModelPart.z -= 6.0f;
+            chestModelPart.y += catRenderState.isBaby ? 4.0f : 6.0f;
+            chestModelPart.z -= catRenderState.isBaby ? 3.0f : 6.0f;
         }
 
         // Likely Fresh Animations, adjust positions for it
@@ -72,9 +72,9 @@ public class CatChestLayer extends ChestLayer<Cat, CatModel<Cat>> {
     }
 
     @Override
-    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull Cat pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch, float pPartialTicks) {
+    public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull CatRenderState renderState, float v, float v1) {
         if (!CCConfig.hideCatChest.get()) {
-            super.render(poseStack, multiBufferSource, pPackedLight, pEntity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch, pPartialTicks);
+            super.render(poseStack, multiBufferSource, pPackedLight, renderState, v, v1);
         }
     }
 }

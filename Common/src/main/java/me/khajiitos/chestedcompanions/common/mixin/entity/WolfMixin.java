@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -116,8 +117,8 @@ public abstract class WolfMixin extends TamableAnimal implements IChestEntity {
     }
 
     @Override
-    protected void dropEquipment() {
-        super.dropEquipment();
+    protected void dropEquipment(@NotNull ServerLevel serverLevel) {
+        super.dropEquipment(serverLevel);
         if (this.chestedCompanions$hasChest()) {
             this.chestedCompanions$removeChestContent(true);
         }

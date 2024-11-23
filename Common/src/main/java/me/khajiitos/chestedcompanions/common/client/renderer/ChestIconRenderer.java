@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Cat;
@@ -42,10 +43,9 @@ public class ChestIconRenderer {
         return false;
     }
 
-    public static void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull LivingEntity pEntity, double yOffset) {
+    public static void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int pPackedLight, @NotNull LivingEntityRenderState entityRenderState, double yOffset) {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.entityCutout(CHEST_ICON_LOCATION));
-
-        int overlayCoords = LivingEntityRenderer.getOverlayCoords(pEntity, 0.f);
+        int overlayCoords = LivingEntityRenderer.getOverlayCoords(entityRenderState, 0.f);
 
         poseStack.pushPose();
         poseStack.translate(0.0, yOffset, 0.0);

@@ -5,6 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.HasCustomInventoryScreen;
@@ -56,7 +57,9 @@ public interface IChestEntity extends HasCustomInventoryScreen, MenuProvider {
                 ItemStack itemStack = ItemStack.parseOptional(provider, compoundTag);
 
                 if (slot >= this.getContainerSize()) {
-                    this.pet.spawnAtLocation(itemStack);
+                    if (this.pet.level() instanceof ServerLevel serverLevel) {
+                        this.pet.spawnAtLocation(serverLevel, itemStack);
+                    }
                 } else {
                     this.setItem(slot, itemStack);
                 }
