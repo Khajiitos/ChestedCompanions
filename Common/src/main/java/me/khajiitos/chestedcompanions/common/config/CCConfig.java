@@ -55,6 +55,9 @@ public class CCConfig {
     @Entry(clientOnly = true)
     public static final CCConfigValues.BooleanValue showChestIconOnWolves = new CCConfigValues.BooleanValue(false);
 
+    @Entry
+    public static final CCConfigValues.BooleanValue feedingOverridesOpeningChest = new CCConfigValues.BooleanValue(true);
+
     public static void init() {
         if (!file.exists()) {
             save();

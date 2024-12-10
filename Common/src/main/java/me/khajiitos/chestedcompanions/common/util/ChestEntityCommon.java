@@ -2,6 +2,7 @@ package me.khajiitos.chestedcompanions.common.util;
 
 import me.khajiitos.chestedcompanions.common.config.CCConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +12,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.CatVariant;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -23,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ChestEntityCommon {
 
     public static <T extends TamableAnimal & IChestEntity> void mobInteract(T chestEntity, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (!chestEntity.level().isClientSide && player.isCrouching() == CCConfig.invertShiftToOpen.get() && player.getUUID().equals(chestEntity.getOwnerUUID())) {
+        if (!chestEntity.level().isClientSide && player.isCrouching() == CCConfig.invertShiftToOpen.get() && (player.getUUID().equals(chestEntity.getOwnerUUID()) || CCConfig.publicChest.get()) && (!CCConfig.feedingOverridesOpeningChest.get() || !(chestEntity.isFood(player.getItemInHand(interactionHand)) && chestEntity.getHealth() < chestEntity.getMaxHealth()))) {
             if (chestEntity.chestedCompanions$hasChest()) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
                 if (inHand.is(Items.SHEARS)) {
@@ -35,6 +39,7 @@ public class ChestEntityCommon {
                     chestEntity.openCustomInventoryScreen(player);
                 }
                 cir.setReturnValue(InteractionResult.SUCCESS);
+                BuiltInRegistries.CAT_VARIANT.get().get();
             } else if (chestEntity.chestedCompanions$allowChest() && (!chestEntity.isBaby() || chestEntity.chestedCompanions$allowChestOnBaby())) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
 
