@@ -2,7 +2,6 @@ package me.khajiitos.chestedcompanions.common.util;
 
 import me.khajiitos.chestedcompanions.common.config.CCConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,9 +11,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.CatVariant;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -38,8 +34,7 @@ public class ChestEntityCommon {
                 } else {
                     chestEntity.openCustomInventoryScreen(player);
                 }
-                cir.setReturnValue(InteractionResult.SUCCESS);
-                BuiltInRegistries.CAT_VARIANT.get().get();
+                cir.setReturnValue(InteractionResult.SUCCESS_SERVER);
             } else if (chestEntity.chestedCompanions$allowChest() && (!chestEntity.isBaby() || chestEntity.chestedCompanions$allowChestOnBaby())) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
 
@@ -52,7 +47,7 @@ public class ChestEntityCommon {
 
                     chestEntity.playSound(SoundEvents.DONKEY_CHEST, 1.0F, (chestEntity.getRandom().nextFloat() - chestEntity.getRandom().nextFloat()) * 0.2F + 1.0F);
                     chestEntity.chestedCompanions$createInventory();
-                    cir.setReturnValue(InteractionResult.SUCCESS);
+                    cir.setReturnValue(InteractionResult.SUCCESS_SERVER);
                 }
             }
         }

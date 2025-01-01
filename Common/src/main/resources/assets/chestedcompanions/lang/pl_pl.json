@@ -2,6 +2,12 @@
   "chestedcompanions.config.header": "Chested Companions - Konfiguracja",
   "chestedcompanions.config.category.general": "Główne",
 
+  "chestedcompanions.config.allowChestOnCats.name": "Włącz skrzynie dla kotów",
+  "chestedcompanions.config.allowChestOnCats.description": "Jeśli włączone, można założyć skrzynię na kotach",
+
+  "chestedcompanions.config.allowChestOnWolves.name": "Włącz skrzynie dla wilków",
+  "chestedcompanions.config.allowChestOnWolves.description": "Jeśli włączone, można założyć skrzynię na wilkach",
+
   "chestedcompanions.config.invertShiftToOpen.name": "Odwróć Shift",
   "chestedcompanions.config.invertShiftToOpen.description": "Gdy włączone, zwykłe kliknięcie spowoduje, że zwierzę usiądzie, a z shift'em otworzy skrzynię",
 
@@ -18,5 +24,26 @@
   "chestedcompanions.config.wolfInventoryCapacity.description": "Odpowiada za liczbę slotów w skrzyni wilka",
   "chestedcompanions.config.wolfInventoryCapacity.value.one_row": "Jeden rząd (9)",
   "chestedcompanions.config.wolfInventoryCapacity.value.two_rows": "Dwa rzędy (18)",
-  "chestedcompanions.config.wolfInventoryCapacity.value.three_rows": "Trzy rzędy (27)"
+  "chestedcompanions.config.wolfInventoryCapacity.value.three_rows": "Trzy rzędy (27)",
+
+  "chestedcompanions.config.hideCatChest.name": "Ukryj skrzynię kota",
+  "chestedcompanions.config.hideCatChest.description": "Ukrywa skrzynię kotom w przypadku niekompatybilności",
+
+  "chestedcompanions.config.hideWolfChest.name": "Ukryj skrzynię wilka",
+  "chestedcompanions.config.hideWolfChest.description": "Ukrywa skrzynię wilkom w przypadku niekompatybilności",
+
+  "chestedcompanions.config.allowChestOnBabyCat.name": "Włącz skrzynie dla małych kotów",
+  "chestedcompanions.config.allowChestOnBabyCat.description": "Skrzynie mogą być założone na małych kotach",
+
+  "chestedcompanions.config.allowChestOnBabyWolf.name": "Włącz skrzynie dla małych wilków",
+  "chestedcompanions.config.allowChestOnBabyWolf.description": "Skrzynie mogą być założone na małych wilkach",
+
+  "chestedcompanions.config.showChestIconOnCats.name": "Pokaż ikonę skrzyni na kotach",
+  "chestedcompanions.config.showChestIconOnCats.description": "Wyświetla ikonę skrzyni nad kotem, opcję można użyć jeśli model skrzyni nie może być wyświetlony",
+
+  "chestedcompanions.config.showChestIconOnWolves.name": "Pokaż ikonę skrzyni na wilkach",
+  "chestedcompanions.config.showChestIconOnWolves.description": "Wyświetla ikonę skrzyni nad wilkiem, opcję można użyć jeśli model skrzyni nie może być wyświetlony",
+
+  "chestedcompanions.config.feedingOverridesOpeningChest.name": "Karmienie nadpisuje otwieranie skrzyni",
+  "chestedcompanions.config.feedingOverridesOpeningChest.description": "Karmienie zwierzęcia ma wyższy priorytet niż otworzenie skrzyni"
 }
