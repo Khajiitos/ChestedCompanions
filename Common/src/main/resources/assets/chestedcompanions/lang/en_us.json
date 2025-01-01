@@ -42,5 +42,8 @@
   "chestedcompanions.config.showChestIconOnCats.description": "Renders a chest icon above the cat, can be used if the chest model can't be displayed",
 
   "chestedcompanions.config.showChestIconOnWolves.name": "Show Chest Icon On Wolves",
-  "chestedcompanions.config.showChestIconOnWolves.description": "Renders a chest icon above the wolf, can be used if the chest model can't be displayed"
+  "chestedcompanions.config.showChestIconOnWolves.description": "Renders a chest icon above the wolf, can be used if the chest model can't be displayed",
+
+  "chestedcompanions.config.feedingOverridesOpeningChest.name": "Feeding Overrides Opening Chest",
+  "chestedcompanions.config.feedingOverridesOpeningChest.description": "Feeding the pet has higher priority than opening the chest"
 }
