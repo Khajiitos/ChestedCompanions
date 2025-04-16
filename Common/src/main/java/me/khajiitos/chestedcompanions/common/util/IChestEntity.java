@@ -15,6 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public interface IChestEntity extends HasCustomInventoryScreen, MenuProvider {
     InventoryCapacity chestedCompanions$getInventoryCapacity();
     PetChestContainer<?> chestedCompanions$getInventory();
@@ -53,16 +55,20 @@ public interface IChestEntity extends HasCustomInventoryScreen, MenuProvider {
 
             // Fixes items being mashed together when reopening the world
             for (int i = 0; i < listTag.size(); ++i) {
-                CompoundTag compoundTag = listTag.getCompound(i);
-                int slot = compoundTag.getByte("Slot") & 255;
-                ItemStack itemStack = ItemStack.parseOptional(provider, compoundTag);
+                CompoundTag compoundTag = listTag.getCompoundOrEmpty(i);
+                int slot = compoundTag.getByteOr("Slot", (byte)0) & 255;
+                Optional<ItemStack> itemStackOptional = ItemStack.parse(provider, compoundTag);
 
-                if (slot >= this.getContainerSize()) {
-                    if (this.pet.level() instanceof ServerLevel serverLevel) {
-                        this.pet.spawnAtLocation(serverLevel, itemStack);
+                if (itemStackOptional.isPresent()) {
+                    ItemStack itemStack = itemStackOptional.get();
+
+                    if (slot >= this.getContainerSize()) {
+                        if (this.pet.level() instanceof ServerLevel serverLevel) {
+                            this.pet.spawnAtLocation(serverLevel, itemStack);
+                        }
+                    } else {
+                        this.setItem(slot, itemStack);
                     }
-                } else {
-                    this.setItem(slot, itemStack);
                 }
             }
         }

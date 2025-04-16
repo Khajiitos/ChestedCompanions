@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.renderer.entity.state.WolfRenderState;
-import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,7 +32,7 @@ public abstract class WolfRendererMixin extends MobRenderer<Wolf, WolfRenderStat
         }
     }
 
-    @Inject(at = @At("TAIL"), method = "extractRenderState(Lnet/minecraft/world/entity/animal/Wolf;Lnet/minecraft/client/renderer/entity/state/WolfRenderState;F)V")
+    @Inject(at = @At("TAIL"), method = "extractRenderState(Lnet/minecraft/world/entity/animal/wolf/Wolf;Lnet/minecraft/client/renderer/entity/state/WolfRenderState;F)V")
     public void extractRenderState(Wolf wolf, WolfRenderState renderState, float v, CallbackInfo ci) {
         if (wolf instanceof IChestEntity chestEntity && renderState instanceof IChestEntityRenderState chestEntityRenderState) {
             chestEntityRenderState.chestedCompanions$setChestItemStack(chestEntity.chestedCompanions$getChestItemStack());

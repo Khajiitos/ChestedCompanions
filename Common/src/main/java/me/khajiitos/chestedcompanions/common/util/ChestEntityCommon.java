@@ -20,10 +20,12 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Optional;
+
 public class ChestEntityCommon {
 
     public static <T extends TamableAnimal & IChestEntity> void mobInteract(T chestEntity, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (!chestEntity.level().isClientSide && player.isCrouching() == CCConfig.invertShiftToOpen.get() && (player.getUUID().equals(chestEntity.getOwnerUUID()) || CCConfig.publicChest.get()) && (!CCConfig.feedingOverridesOpeningChest.get() || !(chestEntity.isFood(player.getItemInHand(interactionHand)) && chestEntity.getHealth() < chestEntity.getMaxHealth()))) {
+        if (!chestEntity.level().isClientSide && player.isCrouching() == CCConfig.invertShiftToOpen.get() && ((chestEntity.getOwnerReference() != null && chestEntity.getOwnerReference().matches(player)) || CCConfig.publicChest.get()) && (!CCConfig.feedingOverridesOpeningChest.get() || !(chestEntity.isFood(player.getItemInHand(interactionHand)) && chestEntity.getHealth() < chestEntity.getMaxHealth()))) {
             if (chestEntity.chestedCompanions$hasChest()) {
                 ItemStack inHand = player.getItemInHand(interactionHand);
                 if (inHand.is(Items.SHEARS)) {
@@ -65,19 +67,24 @@ public class ChestEntityCommon {
     }
 
     public static <T extends TamableAnimal & IChestEntity> void readAdditionalSaveData(T chestEntity, CompoundTag compoundTag) {
-        CompoundTag itemTag = compoundTag.getCompound("ChestItem");
+        CompoundTag itemTag = compoundTag.getCompoundOrEmpty("ChestItem");
 
         ItemStack chestItemStack;
-        if (itemTag.contains("id", CompoundTag.TAG_STRING)) {
-            ResourceLocation resourceLocation = ResourceLocation.parse(itemTag.getString("id"));
+        if (itemTag.contains("id")) {
+            ResourceLocation resourceLocation = ResourceLocation.parse(itemTag.getString("id").orElse(""));
 
             if (!BuiltInRegistries.ITEM.containsKey(resourceLocation)) {
                 // Probably loaded a world after removing a mod - replace with vanilla chest
                 chestItemStack = new ItemStack(Items.CHEST);
             } else {
-                chestItemStack = ItemStack.parseOptional(chestEntity.registryAccess(), itemTag);
+                Optional<ItemStack> itemStackOpt = ItemStack.parse(chestEntity.registryAccess(), itemTag);
+                if (itemStackOpt.isPresent()) {
+                    chestItemStack = itemStackOpt.get();
+                } else {
+                    return;
+                }
             }
-        } else if (compoundTag.getBoolean("HasChest")) {
+        } else if (compoundTag.getBoolean("HasChest").orElse(false)) {
             // Loaded the mod with an old version of the mod that didn't keep the ItemStack - replace with vanilla chest
             chestItemStack = new ItemStack(Items.CHEST);
         } else {
@@ -88,7 +95,7 @@ public class ChestEntityCommon {
         if (!chestItemStack.isEmpty()) {
             chestEntity.chestedCompanions$setChestItemStack(chestItemStack);
             chestEntity.chestedCompanions$createInventory();
-            chestEntity.chestedCompanions$getInventory().fromTag(compoundTag.getList("CCItems", ListTag.TAG_COMPOUND), chestEntity.registryAccess());
+            chestEntity.chestedCompanions$getInventory().fromTag(compoundTag.getList("CCItems").orElse(new ListTag()), chestEntity.registryAccess());
         }
     }
 
