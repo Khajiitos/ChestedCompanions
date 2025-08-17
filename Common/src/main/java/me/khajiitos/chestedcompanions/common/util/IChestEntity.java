@@ -1,21 +1,18 @@
 package me.khajiitos.chestedcompanions.common.util;
 
 import me.khajiitos.chestedcompanions.common.ChestedCompanions;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.HasCustomInventoryScreen;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public interface IChestEntity extends HasCustomInventoryScreen, MenuProvider {
     InventoryCapacity chestedCompanions$getInventoryCapacity();
@@ -40,55 +37,40 @@ public interface IChestEntity extends HasCustomInventoryScreen, MenuProvider {
         private final T pet;
 
         // Used for increasing the size of the container, or shrinking it and dropping items
-        public PetChestContainer(T pet, int inventorySlots, @Nullable PetChestContainer<?> oldContainer, HolderLookup.Provider provider) {
+        public PetChestContainer(T pet, int inventorySlots, @Nullable PetChestContainer<?> oldContainer) {
             super(inventorySlots);
             this.pet = pet;
-
             if (oldContainer != null) {
-                this.fromTag(oldContainer.createTag(provider), provider);
-            }
-        }
-
-        @Override
-        public void fromTag(ListTag listTag, @NotNull HolderLookup.Provider provider) {
-            this.clearContent();
-
-            // Fixes items being mashed together when reopening the world
-            for (int i = 0; i < listTag.size(); ++i) {
-                CompoundTag compoundTag = listTag.getCompoundOrEmpty(i);
-                int slot = compoundTag.getByteOr("Slot", (byte)0) & 255;
-                Optional<ItemStack> itemStackOptional = ItemStack.parse(provider, compoundTag);
-
-                if (itemStackOptional.isPresent()) {
-                    ItemStack itemStack = itemStackOptional.get();
-
-                    if (slot >= this.getContainerSize()) {
-                        if (this.pet.level() instanceof ServerLevel serverLevel) {
-                            this.pet.spawnAtLocation(serverLevel, itemStack);
-                        }
-                    } else {
-                        this.setItem(slot, itemStack);
-                    }
+                this.clearContent();
+                for (int i = 0; i < oldContainer.getContainerSize(); i++) {
+                    putOrDropItem(new ItemStackWithSlot(i, oldContainer.getItem(i)));
                 }
             }
         }
 
-        @Override
-        public @NotNull ListTag createTag(@NotNull HolderLookup.Provider provider) {
-            ListTag listTag = new ListTag();
-
-            for (int i = 0; i < this.getContainerSize();i++) {
+        public void storeAsItemListWithSlot(ValueOutput.TypedOutputList<ItemStackWithSlot> list) {
+            for (int i = 0; i < this.getContainerSize(); i++) {
                 ItemStack itemStack = this.getItem(i);
+
                 if (!itemStack.isEmpty()) {
-                    Tag tag = itemStack.save(provider);
-                    if (tag instanceof CompoundTag compoundTag) {
-                        compoundTag.putByte("Slot", (byte)i);
-                    }
-                    listTag.add(tag);
+                    list.add(new ItemStackWithSlot(i, itemStack));
                 }
             }
+        }
 
-            return listTag;
+        public void loadFromItemListWithSlot(ValueInput.TypedInputList<ItemStackWithSlot> list) {
+            this.clearContent();
+            list.forEach(this::putOrDropItem);
+        }
+
+        public void putOrDropItem(ItemStackWithSlot itemStackWithSlot) {
+            if (itemStackWithSlot.slot() >= this.getContainerSize()) {
+                if (this.pet.level() instanceof ServerLevel serverLevel) {
+                    this.pet.spawnAtLocation(serverLevel, itemStackWithSlot.stack());
+                }
+                return;
+            }
+            this.setItem(itemStackWithSlot.slot(), itemStackWithSlot.stack());
         }
 
         @Override

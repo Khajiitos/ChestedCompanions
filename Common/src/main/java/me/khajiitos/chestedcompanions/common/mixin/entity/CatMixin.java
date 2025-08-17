@@ -4,7 +4,6 @@ import me.khajiitos.chestedcompanions.common.config.CCConfig;
 import me.khajiitos.chestedcompanions.common.util.ChestEntityCommon;
 import me.khajiitos.chestedcompanions.common.util.IChestEntity;
 import me.khajiitos.chestedcompanions.common.util.InventoryCapacity;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -77,19 +78,19 @@ public abstract class CatMixin extends TamableAnimal implements IChestEntity {
     }
 
     @Inject(at = @At("TAIL"), method = "addAdditionalSaveData")
-    public void addAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
-        ChestEntityCommon.addAdditionalSaveData(this, compoundTag);
+    public void addAdditionalSaveData(ValueOutput valueOutput, CallbackInfo ci) {
+        ChestEntityCommon.addAdditionalSaveData(this, valueOutput);
     }
 
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData")
-    public void readAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
-        ChestEntityCommon.readAdditionalSaveData(this, compoundTag);
+    public void readAdditionalSaveData(ValueInput valueInput, CallbackInfo ci) {
+        ChestEntityCommon.readAdditionalSaveData(this, valueInput);
     }
 
     @Unique
     @Override
     public void chestedCompanions$createInventory() {
-        this.chestedCompanions$inventory = new IChestEntity.PetChestContainer<>(this, this.chestedCompanions$getInventoryCapacity().containerRows * 9, this.chestedCompanions$inventory, this.registryAccess());
+        this.chestedCompanions$inventory = new IChestEntity.PetChestContainer<>(this, this.chestedCompanions$getInventoryCapacity().containerRows * 9, this.chestedCompanions$inventory);
     }
 
     @Override

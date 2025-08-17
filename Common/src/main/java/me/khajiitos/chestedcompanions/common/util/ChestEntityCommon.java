@@ -1,14 +1,11 @@
 package me.khajiitos.chestedcompanions.common.util;
 
 import me.khajiitos.chestedcompanions.common.config.CCConfig;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,6 +14,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -55,47 +54,36 @@ public class ChestEntityCommon {
         }
     }
 
-    public static <T extends TamableAnimal & IChestEntity> void addAdditionalSaveData(T chestEntity, CompoundTag compoundTag) {
+    public static <T extends TamableAnimal & IChestEntity> void addAdditionalSaveData(T chestEntity, ValueOutput valueOutput) {
         if (chestEntity.chestedCompanions$hasChest()) {
             ItemStack chestItemStack = chestEntity.chestedCompanions$getChestItemStack();
-            compoundTag.put("ChestItem", chestItemStack.save(chestEntity.registryAccess()));
+            valueOutput.store("ChestItem", ItemStack.CODEC, chestItemStack);
         }
 
         if (chestEntity.chestedCompanions$getInventory() != null) {
-            compoundTag.put("CCItems", chestEntity.chestedCompanions$getInventory().createTag(chestEntity.registryAccess()));
+            var itemsList = valueOutput.list("CCItems", ItemStackWithSlot.CODEC);
+            chestEntity.chestedCompanions$getInventory().storeAsItemListWithSlot(itemsList);
         }
     }
 
-    public static <T extends TamableAnimal & IChestEntity> void readAdditionalSaveData(T chestEntity, CompoundTag compoundTag) {
-        CompoundTag itemTag = compoundTag.getCompoundOrEmpty("ChestItem");
+    public static <T extends TamableAnimal & IChestEntity> void readAdditionalSaveData(T chestEntity, ValueInput valueInput) {
+        Optional<ItemStack> itemTag = valueInput.read("ChestItem", ItemStack.CODEC);
 
         ItemStack chestItemStack;
-        if (itemTag.contains("id")) {
-            ResourceLocation resourceLocation = ResourceLocation.parse(itemTag.getString("id").orElse(""));
 
-            if (!BuiltInRegistries.ITEM.containsKey(resourceLocation)) {
-                // Probably loaded a world after removing a mod - replace with vanilla chest
-                chestItemStack = new ItemStack(Items.CHEST);
-            } else {
-                Optional<ItemStack> itemStackOpt = ItemStack.parse(chestEntity.registryAccess(), itemTag);
-                if (itemStackOpt.isPresent()) {
-                    chestItemStack = itemStackOpt.get();
-                } else {
-                    return;
-                }
-            }
-        } else if (compoundTag.getBoolean("HasChest").orElse(false)) {
+        if (itemTag.isPresent()) {
+            chestItemStack = itemTag.get();
+        } else if (valueInput.getBooleanOr("HasChest", false)) {
             // Loaded the mod with an old version of the mod that didn't keep the ItemStack - replace with vanilla chest
             chestItemStack = new ItemStack(Items.CHEST);
         } else {
-            // No chest
             return;
         }
 
         if (!chestItemStack.isEmpty()) {
             chestEntity.chestedCompanions$setChestItemStack(chestItemStack);
             chestEntity.chestedCompanions$createInventory();
-            chestEntity.chestedCompanions$getInventory().fromTag(compoundTag.getList("CCItems").orElse(new ListTag()), chestEntity.registryAccess());
+            valueInput.list("CCItems", ItemStackWithSlot.CODEC).ifPresent(list -> chestEntity.chestedCompanions$getInventory().loadFromItemListWithSlot(list));
         }
     }
 
